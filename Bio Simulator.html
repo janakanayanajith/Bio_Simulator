@@ -1,0 +1,120 @@
+
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Bio Simulator</title>
+        <meta charset="UTF-8">
+           <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+        <script>
+
+            function chk() {
+                var ifConnected = window.navigator.onLine;
+                if (ifConnected) {
+                    run();
+                } else {
+                    alert('Make sure you are connected to the internet');
+                }
+            }
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+            google.charts.load('current', {'packages':['gauge']});
+            //google.charts.setOnLoadCallback(drawChart);
+
+
+            async function run()
+            {
+                var options = {
+                  width: 800, height: 240,
+                  redFrom: 90, redTo: 100,
+                  yellowFrom:75, yellowTo: 90,
+                  minorTicks: 5
+                };
+                var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+
+            	var Si=parseFloat(document.getElementById("Si").value);
+            	var X=parseFloat(document.getElementById("Xi").value);
+
+            	var Y=0.4;
+            	var S=0;
+            	var Km=1;
+            	var n=4.12;
+
+            	var time=0;
+            	var xSeries = [];
+                var pSeries = [];
+                var sSeries = [];
+
+                while(true)
+                {
+                    var h=parseFloat(document.getElementById("h").value);
+                    var D = document.getElementById("D").value;
+                    var pH = document.getElementById("pH").value;
+                    var T = document.getElementById("T").value;
+
+                    var mumax=-40.5+11.78*pH-0.0691*pH**2+1.65*T+0.003*T**2-0.468*pH*T;
+                    var mu=mumax*S/(Km+S)
+                    var r1=mu*X;
+                    var dxdt=(mu-D)*X;
+                    var dsdt=D*(Si-S)-(X/Y)*mu;
+
+                    X=X+h*dxdt;
+                    S=S+h*dsdt;
+                    time=time+h;
+                    console.log(h, X, S,dxdt, dsdt, mu, time);
+                    document.getElementById("time").innerHTML=time;;
+                    var data = google.visualization.arrayToDataTable([
+                      ['Label', 'Value'],
+                      ['Biomass (X)', X],
+                      ['Substrate (S)', S],
+                    ]);
+                    chart.draw(data, options);
+                    await sleep(50);
+
+                }
+            }
+
+        </script>
+    </head>
+    <body  onload="chk()">
+        <div align="center" >
+            <h1>Bio Simulator</h1>
+            <p>Reference: <a href=https://iopscience.iop.org/article/10.1088/1742-6596/890/1/012050/pdf>https://iopscience.iop.org/article/10.1088/1742-6596/890/1/012050/pdf</a><br>Edit the HTML source code of this page to modify the system model</p>
+            <table border="1">
+
+                <tbody>
+                    <tr>
+                        <td>Initial biomass concentration (gm/l):</td>
+                        <td><input type="number" id="Xi" value="0.001" size="3" /></td>
+                    </tr>
+                    <tr>
+                        <td>Feed substrate concentration (gm/l):</td>
+                        <td><input type="number" id="Si" value="6" size="3" /></td>
+                    </tr>
+                    <tr>
+                        <td>Step Size:</td>
+                        <td><input type="number" id="h" value="0.1" size="3" /></td>
+                    </tr>
+                      <tr>
+                        <td>pH:</td>
+                        <td><input type="number" id="pH" value="4" size="3" /></td>
+                    </tr>
+                      <tr>
+                        <td>Temperature:</td>
+                        <td><input type="number" id="T" value="25" size="3" /></td>
+                    </tr>
+                      <tr>
+                        <td>Dilution rate:</td>
+                        <td><input type="number" id="D" value="0.3" size="3" /></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+        </div>
+        <div  align="center"  id="chart_div" style="height: 240px;"></div><h1>Time:</h1> <h1 id="time"></h1>
+
+        <div align="right">Created by Janaka Nayanajith</div>
+
+</body>
+</html>
