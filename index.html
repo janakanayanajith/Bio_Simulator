@@ -1,71 +1,105 @@
 
-            function chk() {
-                var ifConnected = window.navigator.onLine;
-                if (ifConnected) {
-                    run();
-                } else {
-                    alert('Make sure you are connected to the internet');
-                }
-            }
-            function sleep(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
-            google.charts.load('current', {'packages':['gauge']});
-            //google.charts.setOnLoadCallback(drawChart);
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Bio Simulator</title>
+        <meta charset="UTF-8">
+           <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript" src="Script.js"></script>
+        <style>
+.container {
+  position: relative;
+  text-align: center;
+  color: white;
+}
 
+.bottom-left {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
+}
 
-            async function run()
-            {
-                var options = {
-                  width: 600, height: 200,
-                  majorTicks: ['0','1','2','3','4','5','6','7','8','9','10'],
-                  max:10
-                };
-                var x_chart = new google.visualization.Gauge(document.getElementById('x_div'));
-                var y_chart = new google.visualization.Gauge(document.getElementById('s_div'));
+.D {
+  position: absolute;
+  top: 53%;
+  left: 20%;
+  width: 70px;
+  font-size: 40px;
+  transform: translate(-50%, -50%);
+}
 
-            	var X=parseFloat(document.getElementById("Xi").value);
+.T {
+  position: absolute;
+  top: 90%;
+  left: 42%;
+  width: 60px;
+  font-size: 40px;
+  transform: translate(-50%, -50%);
+}
 
-            	var Y=0.4;
-            	var S=0;
-            	var Km=1;
-            	var n=4.12;
+.pH {
+  position: absolute;
+  top: 80%;
+  left: 10%;
+  width: 50px;
+  font-size: 40px;
+  transform: translate(-50%, -50%);
+}
 
-            	var time=0;
-            	var xSeries = [];
-                var pSeries = [];
-                var sSeries = [];
+.s {
+  position: absolute;
+  top: 52%;
+  left: 10%;
+  width: 70px;
+  font-size: 40px;
+  transform: translate(-50%, -50%);
+}
 
-                while(true)
-                {
-                    var h=parseFloat(document.getElementById("h").value);
-                    var D = document.getElementById("D").value;
-                    var pH = document.getElementById("pH").value;
-                    var T = document.getElementById("T").value;
-            	    var Si=parseFloat(document.getElementById("Si").value);
+.s_div {
+  position: absolute;
+  top: 120%;
+  left: 26%;
+  transform: translate(-50%, -50%);
+}
 
-                    var mumax=-40.5+11.78*pH-0.0691*pH**2+1.65*T+0.003*T**2-0.468*pH*T;
-                    var mu=mumax*S/(Km+S)
-                    var r1=mu*X;
-                    var dxdt=(mu-D)*X;
-                    var dsdt=D*(Si-S)-(X/Y)*mu;
+.x_div {
+  position: absolute;
+  top: 72%;
+  left: 56%;
+  transform: translate(-50%, -50%);
+}
+</style>
+    </head>
+    <body  onload="chk()">
+        <div align="center" >
+            <h1>Bio Simulator</h1>
+            <p>Reference: <a href=https://iopscience.iop.org/article/10.1088/1742-6596/890/1/012050/pdf>https://iopscience.iop.org/article/10.1088/1742-6596/890/1/012050/pdf</a><br>Edit the HTML source code of this page to modify the system model</p>
+            <table border="1">
 
-                    X=X+h*dxdt;
-                    S=S+h*dsdt;
-                    time=time+h;
-                    console.log(h, X, S,dxdt, dsdt, mu, time);
-                    document.getElementById("time").innerHTML=time;;
-                    var x_data = google.visualization.arrayToDataTable([
-                      ['Label', 'Value'],
-                      ['Biomass (X)', X],
-                    ]);
-                    var s_data = google.visualization.arrayToDataTable([
-                      ['Label', 'Value'],
-                      ['Substrate (S)', S],
-                    ]);
-                    x_chart.draw(x_data, options);
-                    y_chart.draw(s_data, options);
-                    await sleep(50);
+                <tbody>
+                    <tr>
+                        <td>Initial biomass concentration (gm/l):</td>
+                        <td><input type="number" id="Xi" value="0.001" size="3" /></td>
+                    </tr>
 
-                }
-            }
+                    <tr>
+                        <td>Step Size:</td>
+                        <td><input type="number" id="h" value="0.1" size="3" /></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br>
+        </div>
+        <img src="Bio.png" style="width:50%;">
+        <input type="number" id="Si" class="s" value="6" size="3" />
+        <input type="number" id="pH" class="pH" value="4" size="3" />
+        <input type="number" id="T" class="T" value="25" size="3" />
+        <input type="number" id="D" class="D" value="0.3" size="3" />
+        <div  align="center"  id="x_div" class="x_div" style="height: 240px;"></div>
+            <div  align="center"  id="s_div" class="s_div" style="height: 240px;">        </div>
+        <h1>Time (h):</h1> <h1 id="time"></h1>
+        <div align="right">Created by Janaka Nayanajith</div>
+
+</body>
+</html>
