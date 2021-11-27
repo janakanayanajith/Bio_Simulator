@@ -1,13 +1,4 @@
 
-<!DOCTYPE HTML>
-<html>
-    <head>
-        <title>Bio Simulator</title>
-        <meta charset="UTF-8">
-           <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-        <script>
-
             function chk() {
                 var ifConnected = window.navigator.onLine;
                 if (ifConnected) {
@@ -26,14 +17,13 @@
             async function run()
             {
                 var options = {
-                  width: 800, height: 240,
-                  redFrom: 90, redTo: 100,
-                  yellowFrom:75, yellowTo: 90,
-                  minorTicks: 5
+                  width: 600, height: 200,
+                  majorTicks: ['0','1','2','3','4','5','6','7','8','9','10'],
+                  max:10
                 };
-                var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+                var x_chart = new google.visualization.Gauge(document.getElementById('x_div'));
+                var y_chart = new google.visualization.Gauge(document.getElementById('s_div'));
 
-            	var Si=parseFloat(document.getElementById("Si").value);
             	var X=parseFloat(document.getElementById("Xi").value);
 
             	var Y=0.4;
@@ -52,6 +42,7 @@
                     var D = document.getElementById("D").value;
                     var pH = document.getElementById("pH").value;
                     var T = document.getElementById("T").value;
+            	    var Si=parseFloat(document.getElementById("Si").value);
 
                     var mumax=-40.5+11.78*pH-0.0691*pH**2+1.65*T+0.003*T**2-0.468*pH*T;
                     var mu=mumax*S/(Km+S)
@@ -64,57 +55,17 @@
                     time=time+h;
                     console.log(h, X, S,dxdt, dsdt, mu, time);
                     document.getElementById("time").innerHTML=time;;
-                    var data = google.visualization.arrayToDataTable([
+                    var x_data = google.visualization.arrayToDataTable([
                       ['Label', 'Value'],
                       ['Biomass (X)', X],
+                    ]);
+                    var s_data = google.visualization.arrayToDataTable([
+                      ['Label', 'Value'],
                       ['Substrate (S)', S],
                     ]);
-                    chart.draw(data, options);
+                    x_chart.draw(x_data, options);
+                    y_chart.draw(s_data, options);
                     await sleep(50);
 
                 }
             }
-
-        </script>
-    </head>
-    <body  onload="chk()">
-        <div align="center" >
-            <h1>Bio Simulator</h1>
-            <p>Reference: <a href=https://iopscience.iop.org/article/10.1088/1742-6596/890/1/012050/pdf>https://iopscience.iop.org/article/10.1088/1742-6596/890/1/012050/pdf</a><br>Edit the HTML source code of this page to modify the system model</p>
-            <table border="1">
-
-                <tbody>
-                    <tr>
-                        <td>Initial biomass concentration (gm/l):</td>
-                        <td><input type="number" id="Xi" value="0.001" size="3" /></td>
-                    </tr>
-                    <tr>
-                        <td>Feed substrate concentration (gm/l):</td>
-                        <td><input type="number" id="Si" value="6" size="3" /></td>
-                    </tr>
-                    <tr>
-                        <td>Step Size:</td>
-                        <td><input type="number" id="h" value="0.1" size="3" /></td>
-                    </tr>
-                      <tr>
-                        <td>pH:</td>
-                        <td><input type="number" id="pH" value="4" size="3" /></td>
-                    </tr>
-                      <tr>
-                        <td>Temperature:</td>
-                        <td><input type="number" id="T" value="25" size="3" /></td>
-                    </tr>
-                      <tr>
-                        <td>Dilution rate:</td>
-                        <td><input type="number" id="D" value="0.3" size="3" /></td>
-                    </tr>
-                </tbody>
-            </table>
-            <br>
-        </div>
-        <div  align="center"  id="chart_div" style="height: 240px;"></div><h1>Time:</h1> <h1 id="time"></h1>
-
-        <div align="right">Created by Janaka Nayanajith</div>
-
-</body>
-</html>
