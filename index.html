@@ -21,52 +21,94 @@
 
 .D {
   position: absolute;
-  top: 53%;
-  left: 20%;
+  top: 116px;
+  left: 47%;
   width: 70px;
-  font-size: 40px;
+  font-size: 20px;
   transform: translate(-50%, -50%);
+  border:none;
+}
+
+.DL {
+  position: absolute;
+  top: 94px;
+  left: 37%;
+  font-size: 20px;
+  transform: translate(-50%, -50%);
+  border:none;
+}
+
+.ig {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width:600px;
 }
 
 .T {
   position: absolute;
-  top: 90%;
-  left: 42%;
+  top: 482px;
+  left: 79%;
   width: 60px;
-  font-size: 40px;
-  transform: translate(-50%, -50%);
+  font-size: 20px;
+  border:none;
+}
+
+.TL {
+  position: absolute;
+  top: 460px;
+  left: 65%;
+  font-size: 20px;
+  border:none;
 }
 
 .pH {
   position: absolute;
-  top: 80%;
-  left: 10%;
+  top: 55%;
+  left: 24%;
   width: 50px;
-  font-size: 40px;
-  transform: translate(-50%, -50%);
+  font-size: 20px;
+  border:none;
+}
+
+.pHL {
+  position: absolute;
+  top: 51.5%;
+  left: 21%;
+  width: 50px;
+  font-size: 20px;
+  border:none;
 }
 
 .s {
   position: absolute;
-  top: 52%;
-  left: 10%;
-  width: 70px;
-  font-size: 40px;
-  transform: translate(-50%, -50%);
+  top: 101px;
+  left: 240px;
+  width: 50px;
+  font-size: 20px;
+  border:none;
+}
+
+.SL {
+  position: absolute;
+  top: 80px;
+  left: 150px;
+  width: 50px;
+  font-size: 20px;
+  border:none;
 }
 
 .s_div {
   position: absolute;
-  top: 120%;
-  left: 26%;
-  transform: translate(-50%, -50%);
+  top: 240px;
+  left: 800px;
 }
 
 .x_div {
   position: absolute;
-  top: 72%;
-  left: 56%;
-  transform: translate(-50%, -50%);
+  top: 375px;
+  left: 10px;
 }
 </style>
     </head>
@@ -93,13 +135,18 @@
 
             <br>
         </div>
-        <img src="Bio.png" style="width:50%;">
+        <div style="display: block;   position: relative; margin-left: auto;  margin-right: auto; width:1000px; height:600px;">
+        <img src="Bio.png" class="ig">
+        <p class="SL">Substrate:</p>
         <input type="number" id="Si" class="s" value="6" size="3" />
+        <p class="pHL">pH:</p>
         <input type="number" id="pH" class="pH" value="4" size="3" />
-        <input type="number" id="T" class="T" value="25" size="3" />
+        <p class="DL">Dilution Rate:</p>
         <input type="number" id="D" class="D" value="0.3" size="3" />
         <div  align="center"  id="x_div" class="x_div" style="height: 240px;"></div>
-            <div  align="center"  id="s_div" class="s_div" style="height: 240px;">        </div>
+        <div  align="center"  id="s_div" class="s_div" style="height: 240px;"></div>
+        <p class="TL">Temperature (C):</p>
+        <input type="number" id="T" class="T" value="25" size="3" /></div>
         <h1>Time (h):</h1> <h1 id="time"></h1>
         <div align="right">Created by Janaka Nayanajith</div>
 
